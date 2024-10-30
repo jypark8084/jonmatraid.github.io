@@ -1,6 +1,6 @@
-// Firebase 초기화
-import { initializeApp } from "firebase/app"; // Firebase 앱 초기화
-import { getFirestore, collection, addDoc, getDocs, orderBy, query } from "firebase/firestore"; // Firestore 가져오기
+// script(2).js // Firebase 초기화
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.x.x/firebase-app.js"; // Firebase 앱 초기화
+import { getFirestore, collection, addDoc, getDocs, orderBy, query } from "https://www.gstatic.com/firebasejs/9.x.x/firebase-firestore.js"; // Firestore 가져오기
 
 const firebaseConfig = {
     apiKey: "AIzaSyBU99g_FxKViKWgH4t9EqR4NjfO5FQ5nyQ",
@@ -30,7 +30,7 @@ async function addMember() {
                 nickname: nickname,
                 level: level
             });
-            displayLevelRanking();
+            loadMembers(); // 데이터 로드
         } catch (error) {
             console.error("Error adding document: ", error);
         }
@@ -70,7 +70,7 @@ async function addRaidResult() {
                 nickname: nickname,
                 totalDamage: totalDamage
             });
-            displayRaidRanking();
+            loadRaidResults(); // 데이터 로드
         } catch (error) {
             console.error("Error adding document: ", error);
         }
@@ -88,11 +88,6 @@ async function loadRaidResults() {
     displayRaidRanking();
 }
 
-document.addEventListener('DOMContentLoaded', (event) => {
-    loadMembers();
-    loadRaidResults();
-});
-
 function displayRaidRanking() {
     const damageRankingDiv = document.getElementById('damageRanking');
     damageRankingDiv.innerHTML = '<h4>딜량 순위표</h4>';
@@ -102,5 +97,7 @@ function displayRaidRanking() {
 }
 
 // 페이지 로드 시 데이터 표시
-loadMembers();
-loadRaidResults();
+document.addEventListener('DOMContentLoaded', (event) => {
+    loadMembers();
+    loadRaidResults();
+});
