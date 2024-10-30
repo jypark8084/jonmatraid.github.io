@@ -100,3 +100,11 @@ function displayRaidRanking() {
         damageRankingDiv.innerHTML += `<p>${index + 1}. ${result.nickname} - ${result.totalDamage}</p>`;
     });
 }
+
+export async function resetAllData() {
+    await resetCollection("members");
+    await resetCollection("raidResults");
+    displayLevelRanking();
+    displayRaidRanking();
+    console.log("모든 데이터가 초기화되었습니다.");
+}
