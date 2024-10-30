@@ -1,6 +1,6 @@
 // Firebase 초기화
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs, orderBy, query } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js";
+import { getFirestore, collection, addDoc, getDocs, orderBy, query, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBU99g_FxKViKWgH4t9EqR4NjfO5FQ5nyQ",
@@ -12,14 +12,13 @@ const firebaseConfig = {
     measurementId: "G-BK4T3PRRTF"
 };
 
-// Firebase 앱 초기화
 const app = initializeApp(firebaseConfig);
-const db = getFirestore(app); // Firestore 초기화
+const db = getFirestore(app);
 
-let members = []; // 멤버 리스트 저장
-let raidResults = []; // 딜량 결과 저장
+let members = [];
+let raidResults = [];
 
-// 데이터 추가
+// 멤버 추가
 export async function addMember() {
     const nickname = document.getElementById('nickname').value;
     const level = parseInt(document.getElementById('level').value);
@@ -30,14 +29,15 @@ export async function addMember() {
                 nickname: nickname,
                 level: level
             });
-            displayLevelRanking();
+            alert("변경 사항이 추가되었습니다.");  // 알림창 표시
+            loadMembers();  // 데이터 새로고침
         } catch (error) {
             console.error("Error adding document: ", error);
         }
     }
 }
 
-// 데이터 로드
+// 멤버 로드
 export async function loadMembers() {
     const q = query(collection(db, "members"), orderBy("level", "desc"));
     const querySnapshot = await getDocs(q);
@@ -70,7 +70,8 @@ export async function addRaidResult() {
                 nickname: nickname,
                 totalDamage: totalDamage
             });
-            displayRaidRanking();
+            alert("변경 사항이 추가되었습니다.");  // 알림창 표시
+            loadRaidResults();  // 데이터 새로고침
         } catch (error) {
             console.error("Error adding document: ", error);
         }
@@ -88,11 +89,6 @@ export async function loadRaidResults() {
     displayRaidRanking();
 }
 
-document.addEventListener('DOMContentLoaded', (event) => {
-    loadMembers();
-    loadRaidResults();
-});
-
 function displayRaidRanking() {
     const damageRankingDiv = document.getElementById('damageRanking');
     damageRankingDiv.innerHTML = '<h4>딜량 순위표</h4>';
@@ -101,10 +97,24 @@ function displayRaidRanking() {
     });
 }
 
+// 모든 데이터 초기화
 export async function resetAllData() {
     await resetCollection("members");
     await resetCollection("raidResults");
-    displayLevelRanking();
-    displayRaidRanking();
-    console.log("모든 데이터가 초기화되었습니다.");
+    loadMembers();
+    loadRaidResults();
+    alert("모든 데이터가 초기화되었습니다.");
 }
+
+async function resetCollection(collectionName) {
+    const q = query(collection(db, collectionName));
+    const querySnapshot = await getDocs(q);
+    for (const docSnapshot of querySnapshot.docs) {
+        await deleteDoc(doc(db, collectionName, docSnapshot.id));
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    loadMembers();
+    loadRaidResults();
+});
