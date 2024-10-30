@@ -15,7 +15,7 @@ const firebaseConfig = {
 // Firebase 앱 초기화
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app); // Firestore 초기화
-
+//ftgouguyfty
 let members = []; // 멤버 리스트 저장
 let raidResults = []; // 딜량 결과 저장
 
