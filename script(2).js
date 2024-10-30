@@ -88,6 +88,11 @@ async function loadRaidResults() {
     displayRaidRanking();
 }
 
+document.addEventListener('DOMContentLoaded', (event) => {
+    loadMembers();
+    loadRaidResults();
+});
+
 function displayRaidRanking() {
     const damageRankingDiv = document.getElementById('damageRanking');
     damageRankingDiv.innerHTML = '<h4>딜량 순위표</h4>';
