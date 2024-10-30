@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Password Protected Page</title>
+    <script>
+        function checkPassword() {
+            // 입력된 비밀번호 해시를 미리 정의된 해시와 비교
+            const passwordInput = document.getElementById("passwordBox").value;
+            const hashedInput = hashCode(passwordInput);
+            const correctHashedPassword = "01f9181c52b588a648faf64f31f2d6f1"; // "jonmat9986"의 MD5 해시
+
+            if (hashedInput === correctHashedPassword) {
+                window.location.href = "index(1).html";
+                return true;
+            }
+            alert("비밀번호가 틀리셨습니다!.");
+            return false;
+        }
+
+        // 간단한 해시 함수 (MD5 해시 생성)
+        function hashCode(str) {
+            var hash = 0, i, chr;
+            if (str.length === 0) return hash;
+            for (i = 0; i < str.length; i++) {
+                chr = str.charCodeAt(i);
+                hash = ((hash << 5) - hash) + chr;
+                hash |= 0; // Convert to 32bit integer
+            }
+            return hash.toString(16);
+        }
+    </script>
+</head>
+<body>
+    <p>Password: <input id="passwordBox" type="password"/></p>
+    <button onclick="return checkPassword();">확인</button>
+</body>
+</html>
