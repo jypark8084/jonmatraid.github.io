@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js"></script>
-    <title>Password Protected Page</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>비밀번호 확인</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
     <script>
         function checkPassword() {
-            // 입력된 비밀번호 해시를 미리 정의된 해시와 비교
             const passwordInput = document.getElementById("passwordBox").value;
-            const hashedInput = hashCode(passwordInput);
+            const hashedInput = hashMD5(passwordInput);
             const correctHashedPassword = "01f9181c52b588a648faf64f31f2d6f1"; // "jonmat9986"의 MD5 해시
 
             if (hashedInput === correctHashedPassword) {
@@ -19,21 +19,14 @@
             return false;
         }
 
-        // 간단한 해시 함수 (MD5 해시 생성)
-        function hashCode(str) {
-            var hash = 0, i, chr;
-            if (str.length === 0) return hash;
-            for (i = 0; i < str.length; i++) {
-                chr = str.charCodeAt(i);
-                hash = ((hash << 5) - hash) + chr;
-                hash |= 0; // Convert to 32bit integer
-            }
-            return hash.toString(16);
+        // MD5 해시 함수
+        function hashMD5(str) {
+            return CryptoJS.MD5(str).toString();
         }
     </script>
 </head>
 <body>
-    <p>Password: <input id="passwordBox" type="password"/></p>
-    <button onclick="return checkPassword();">확인</button>
+    <input type="password" id="passwordBox" placeholder="비밀번호 입력">
+    <button onclick="checkPassword()">확인</button>
 </body>
 </html>
