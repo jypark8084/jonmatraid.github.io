@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>관리자 모드</title>
@@ -28,21 +30,47 @@
     </div>
 
     <script>
-        let members = JSON.parse(localStorage.getItem('members')) || [];
-        let raidResults = JSON.parse(localStorage.getItem('raidResults')) || [];
+        // Firebase 초기화
+        const firebaseConfig = {
+            apiKey: "AIzaSyBU99g_FxKViKWgH4t9EqR4NjfO5FQ5nyQ",
+            authDomain: "jonmatraid.firebaseapp.com",
+            projectId: "jonmatraid",
+            storageBucket: "jonmatraid.appspot.com",
+            messagingSenderId: "922194069942",
+            appId: "1:922194069942:web:db5675bde43f3750fa5917",
+            measurementId: "G-BK4T3PRRTF"
+        };
+        
+        // Firebase 앱 초기화
+        const app = initializeApp(firebaseConfig);
+        const db = firebase.firestore(); // Firestore 초기화
 
+        // 데이터 추가
         function addMember() {
             const nickname = document.getElementById('nickname').value;
             const level = parseInt(document.getElementById('level').value);
-
+        
             if (nickname && !isNaN(level)) {
-                members.push({ nickname, level });
-                members.sort((a, b) => b.level - a.level);
-                localStorage.setItem('members', JSON.stringify(members));
-                displayLevelRanking();
+                db.collection("members").add({
+                    nickname: nickname,
+                    level: level
+                }).then(() => {
+                    displayLevelRanking();
+                });
             }
         }
-
+        
+        // 데이터 로드
+        function loadMembers() {
+            db.collection("members").orderBy("level", "desc").get().then((querySnapshot) => {
+                members = [];
+                querySnapshot.forEach((doc) => {
+                    members.push({ id: doc.id, ...doc.data() });
+                });
+                displayLevelRanking();
+            });
+        }
+        
         function displayLevelRanking() {
             const levelRankingDiv = document.getElementById('levelRanking');
             levelRankingDiv.innerHTML = '<h4>레벨 순위표</h4>';
@@ -51,19 +79,33 @@
             });
         }
 
+        // 유니온 레이드 딜량 추가
         function addRaidResult() {
             const nickname = document.getElementById('raidNickname').value;
             const damage1 = parseInt(document.getElementById('damage1').value);
             const damage2 = parseInt(document.getElementById('damage2').value);
             const damage3 = parseInt(document.getElementById('damage3').value);
-
+        
             if (nickname && !isNaN(damage1) && !isNaN(damage2) && !isNaN(damage3)) {
                 const totalDamage = damage1 + damage2 + damage3;
-                raidResults.push({ nickname, totalDamage });
-                raidResults.sort((a, b) => b.totalDamage - a.totalDamage);
-                localStorage.setItem('raidResults', JSON.stringify(raidResults));
-                displayRaidRanking();
+                db.collection("raidResults").add({
+                    nickname: nickname,
+                    totalDamage: totalDamage
+                }).then(() => {
+                    displayRaidRanking();
+                });
             }
+        }
+
+        // 유니온 레이드 딜량 로드
+        function loadRaidResults() {
+            db.collection("raidResults").orderBy("totalDamage", "desc").get().then((querySnapshot) => {
+                raidResults = [];
+                querySnapshot.forEach((doc) => {
+                    raidResults.push({ id: doc.id, ...doc.data() });
+                });
+                displayRaidRanking();
+            });
         }
 
         function displayRaidRanking() {
@@ -74,31 +116,9 @@
             });
         }
 
-        // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyACUArK_eDnE5JuTZj0fBjrFPAQwE5bAXA",
-  authDomain: "jonmatunionraid.firebaseapp.com",
-  projectId: "jonmatunionraid",
-  storageBucket: "jonmatunionraid.appspot.com",
-  messagingSenderId: "700853521754",
-  appId: "1:700853521754:web:282eb48ba20b5055127763",
-  measurementId: "G-WMNJX2SR9W"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-
-        // 페이지 로드 시 기존 데이터 표시
-        displayLevelRanking();
-        displayRaidRanking();
+        // 페이지 로드 시 데이터 표시
+        loadMembers();
+        loadRaidResults();
     </script>
 </body>
 </html>
