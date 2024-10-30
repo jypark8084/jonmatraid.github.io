@@ -1,6 +1,6 @@
 // script(2).js // Firebase 초기화
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.x.x/firebase-app.js"; // Firebase 앱 초기화
-import { getFirestore, collection, addDoc, getDocs, orderBy, query } from "https://www.gstatic.com/firebasejs/9.x.x/firebase-firestore.js"; // Firestore 가져오기
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-app.js"; // Firebase 앱 초기화
+import { getFirestore, collection, addDoc, getDocs, orderBy, query } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-firestore.js"; // Firestore 가져오기
 
 const firebaseConfig = {
     apiKey: "AIzaSyBU99g_FxKViKWgH4t9EqR4NjfO5FQ5nyQ",
@@ -15,7 +15,7 @@ const firebaseConfig = {
 // Firebase 앱 초기화
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app); // Firestore 초기화
-//ftgouguyfty
+
 let members = []; // 멤버 리스트 저장
 let raidResults = []; // 딜량 결과 저장
 
