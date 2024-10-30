@@ -1,15 +1,12 @@
-<!DOCTYPE html>
-<html lang="ko">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>비밀번호 확인</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
     <script>
         function checkPassword() {
+            // 입력된 비밀번호 해시를 미리 정의된 해시와 비교
             const passwordInput = document.getElementById("passwordBox").value;
-            const hashedInput = hashMD5(passwordInput);
-            const correctHashedPassword = "01f9181c52b588a648faf64f31f2d6f1"; // "jonmat9986"의 MD5 해시
+            const hashedInput = CryptoJS.MD5(passwordInput).toString();
+            const correctHashedPassword = "81dc9bdb52d04dc20036dbd8313ed055"; // "1234"의 MD5 해시
 
             if (hashedInput === correctHashedPassword) {
                 window.location.href = "index(1).html";
@@ -18,15 +15,10 @@
             alert("비밀번호가 틀리셨습니다!.");
             return false;
         }
-
-        // MD5 해시 함수
-        function hashMD5(str) {
-            return CryptoJS.MD5(str).toString();
-        }
     </script>
 </head>
 <body>
-    <input type="password" id="passwordBox" placeholder="비밀번호 입력">
+    <input type="password" id="passwordBox" placeholder="비밀번호 입력" />
     <button onclick="checkPassword()">확인</button>
 </body>
 </html>
