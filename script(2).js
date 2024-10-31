@@ -30,7 +30,8 @@ export async function addMember() {
                 level: level
             });
             alert("변경 사항이 추가되었습니다.");  // 알림창 표시
-            loadMembers();  // 데이터 새로고침
+            await loadMembers();  // 데이터 새로고침
+            window.scrollTo(0, document.body.scrollHeight); // 스크롤을 맨 아래로 유지
         } catch (error) {
             console.error("Error adding document: ", error);
         }
@@ -71,7 +72,8 @@ export async function addRaidResult() {
                 totalDamage: totalDamage
             });
             alert("변경 사항이 추가되었습니다.");  // 알림창 표시
-            loadRaidResults();  // 데이터 새로고침
+            await loadRaidResults();  // 데이터 새로고침
+            window.scrollTo(0, document.body.scrollHeight); // 스크롤을 맨 아래로 유지
         } catch (error) {
             console.error("Error adding document: ", error);
         }
@@ -101,9 +103,9 @@ function displayRaidRanking() {
 export async function resetAllData() {
     await resetCollection("members");
     await resetCollection("raidResults");
-    loadMembers();
-    loadRaidResults();
-    alert("모든 데이터가 초기화되었습니다.");
+    await loadMembers();
+    await loadRaidResults();
+    alert("모든 데이터가 초기화되었습니다."); // 초기화 알림
 }
 
 async function resetCollection(collectionName) {
