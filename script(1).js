@@ -70,7 +70,7 @@ document.getElementById("loginButton").addEventListener("click", checkPassword);
 
 function checkPassword() {
     const password = document.getElementById("passwordBox").value;
-    if (password === "1234") { // 비밀번호를 여기에서 설정
+    if (password === "1990") { // 비밀번호를 여기에서 설정
         window.location.href = "index(1).html"; // 로그인 성공 시 이동
     } else {
         alert("비밀번호가 틀렸습니다.");
