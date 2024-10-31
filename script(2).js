@@ -12,49 +12,48 @@ const firebaseConfig = {
     measurementId: "G-BK4T3PRRTF"
 };
 
+// Firebase 앱 초기화
 const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+const db = getFirestore(app); // Firestore 초기화
 
-let members = [];
-let raidResults = [];
+let members = []; // 멤버 리스트 저장
+let raidResults = []; // 딜량 결과 저장
 
-// 멤버 추가
+// 레벨 순위 추가
 export async function addMember() {
     const nickname = document.getElementById('nickname').value;
     const level = parseInt(document.getElementById('level').value);
 
     if (nickname && !isNaN(level)) {
         try {
-            await addDoc(collection(db, "members"), {
-                nickname: nickname,
-                level: level
-            });
-            alert("변경 사항이 추가되었습니다.");  // 알림창 표시
-            await loadMembers();  // 데이터 새로고침
-            window.scrollTo(0, document.body.scrollHeight); // 스크롤을 맨 아래로 유지
+            await addDoc(collection(db, "members"), { nickname, level });
+            alert("레벨 순위에 추가되었습니다.");
+            loadMembers();
         } catch (error) {
             console.error("Error adding document: ", error);
         }
     }
 }
 
-// 멤버 로드
+// 레벨 순위 로드
 export async function loadMembers() {
     const q = query(collection(db, "members"), orderBy("level", "desc"));
     const querySnapshot = await getDocs(q);
     members = [];
-    querySnapshot.forEach((doc) => {
+    querySnapshot.forEach(doc => {
         members.push({ id: doc.id, ...doc.data() });
     });
     displayLevelRanking();
 }
 
+// 레벨 순위 표시 및 스크롤 설정
 function displayLevelRanking() {
     const levelRankingDiv = document.getElementById('levelRanking');
     levelRankingDiv.innerHTML = '<h4>레벨 순위표</h4>';
     members.forEach((member, index) => {
         levelRankingDiv.innerHTML += `<p>${index + 1}. ${member.nickname} - ${member.level}</p>`;
     });
+    levelRankingDiv.lastElementChild?.scrollIntoView({ behavior: "smooth" });
 }
 
 // 유니온 레이드 딜량 추가
@@ -67,13 +66,9 @@ export async function addRaidResult() {
     if (nickname && !isNaN(damage1) && !isNaN(damage2) && !isNaN(damage3)) {
         const totalDamage = damage1 + damage2 + damage3;
         try {
-            await addDoc(collection(db, "raidResults"), {
-                nickname: nickname,
-                totalDamage: totalDamage
-            });
-            alert("변경 사항이 추가되었습니다.");  // 알림창 표시
-            await loadRaidResults();  // 데이터 새로고침
-            window.scrollTo(0, document.body.scrollHeight); // 스크롤을 맨 아래로 유지
+            await addDoc(collection(db, "raidResults"), { nickname, totalDamage });
+            alert("유니온 레이드 딜량이 추가되었습니다.");
+            loadRaidResults();
         } catch (error) {
             console.error("Error adding document: ", error);
         }
@@ -85,30 +80,33 @@ export async function loadRaidResults() {
     const q = query(collection(db, "raidResults"), orderBy("totalDamage", "desc"));
     const querySnapshot = await getDocs(q);
     raidResults = [];
-    querySnapshot.forEach((doc) => {
+    querySnapshot.forEach(doc => {
         raidResults.push({ id: doc.id, ...doc.data() });
     });
     displayRaidRanking();
 }
 
+// 유니온 레이드 딜량 표시 및 스크롤 설정
 function displayRaidRanking() {
     const damageRankingDiv = document.getElementById('damageRanking');
     damageRankingDiv.innerHTML = '<h4>딜량 순위표</h4>';
     raidResults.forEach((result, index) => {
         damageRankingDiv.innerHTML += `<p>${index + 1}. ${result.nickname} - ${result.totalDamage}</p>`;
     });
+    damageRankingDiv.lastElementChild?.scrollIntoView({ behavior: "smooth" });
 }
 
-// 모든 데이터 초기화
+// 데이터 초기화
 export async function resetAllData() {
-    await resetCollection("members");
-    await resetCollection("raidResults");
-    await loadMembers();
-    await loadRaidResults();
-    alert("모든 데이터가 초기화되었습니다."); // 초기화 알림
+    await deleteCollection("members");
+    await deleteCollection("raidResults");
+    alert("모든 데이터가 초기화되었습니다.");
+    loadMembers();
+    loadRaidResults();
 }
 
-async function resetCollection(collectionName) {
+// Firestore 컬렉션 초기화 함수
+async function deleteCollection(collectionName) {
     const q = query(collection(db, collectionName));
     const querySnapshot = await getDocs(q);
     for (const docSnapshot of querySnapshot.docs) {
