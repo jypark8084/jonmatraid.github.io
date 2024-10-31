@@ -1,2 +1,3 @@
 # jonmatraid.github.io
 뭘 꼴아보노.adsuvjvu9psjhvtydfy
+아이 개 시발 새로 고침 제대로 안되고 초기화 버튼 ㅈㄴ 안됌 개시발 뭐가 문제야 아이 시발....
