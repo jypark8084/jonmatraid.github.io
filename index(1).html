@@ -6,12 +6,13 @@
     <title>관리자 모드</title>
     <link rel="stylesheet" href="style.css">
     <script type="module">
-        import { addMember, loadMembers, addRaidResult, loadRaidResults, resetAllData } from './script(2).js';
+        import { addMember, loadMembers, addRaidResult, loadRaidResults, resetMembers, resetRaidResults } from './script(2).js';
         window.addMember = addMember;
         window.loadMembers = loadMembers;
         window.addRaidResult = addRaidResult;
         window.loadRaidResults = loadRaidResults;
-        window.resetAllData = resetAllData;
+        window.resetMembers = resetMembers;
+        window.resetRaidResults = resetRaidResults;
     </script>
 </head>
 <body>
@@ -22,7 +23,8 @@
             <input type="text" id="nickname" placeholder="닉네임">
             <input type="number" id="level" placeholder="레벨">
             <button onclick="addMember()">추가하기</button>
-            <div id="levelRanking" class="ranking-list"></div>
+            <button onclick="resetMembers()">레벨 순위 초기화</button>
+            <div id="levelRanking"></div>
         </div>
         <div>
             <h3>유니온 레이드 딜량 순위표</h3>
@@ -31,8 +33,8 @@
             <input type="number" id="damage2" placeholder="두 번째 딜량">
             <input type="number" id="damage3" placeholder="세 번째 딜량">
             <button onclick="addRaidResult()">추가하기</button>
-            <button onclick="resetAllData()">초기화하기</button>
-            <div id="damageRanking" class="ranking-list"></div>
+            <button onclick="resetRaidResults()">레이드 딜량 초기화</button>
+            <div id="damageRanking"></div>
         </div>
     </div>
 </body>
