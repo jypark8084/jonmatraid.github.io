@@ -1,18 +1,17 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+    <script defer src="script(1).js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>존맛 유니온 레이드 도움 사이트</title>
     <link rel="stylesheet" href="style.css">
-
-    <!-- Firebase App (필수) -->
-    <script type="module" src="script(1).js"></script>
 </head>
 <body>
     <h4>관리자 로그인</h4>
     <input type="password" id="passwordBox" placeholder="비밀번호 입력" />
-    <button id="loginButton">확인</button>
+    <button onclick="checkPassword()">확인</button>
     <div class="container" id="dataContainer">
         <h2>길드 순위 설정</h2>
         <div>
