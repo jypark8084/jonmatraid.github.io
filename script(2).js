@@ -2,14 +2,14 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase
 import { getFirestore, collection, addDoc, getDocs, orderBy, query, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js";
 
 const firebaseConfig = {
-    apiKey: "your-api-key",
-    authDomain: "your-auth-domain",
-    projectId: "your-project-id",
-    storageBucket: "your-storage-bucket",
-    messagingSenderId: "your-messaging-sender-id",
-    appId: "your-app-id",
-    measurementId: "your-measurement-id"
-};
+    apiKey: "AIzaSyBU99g_FxKViKWgH4t9EqR4NjfO5FQ5nyQ",
+    authDomain: "jonmatraid.firebaseapp.com",
+    projectId: "jonmatraid",
+    storageBucket: "jonmatraid.appspot.com",
+    messagingSenderId: "922194069942",
+    appId: "1:922194069942:web:db5675bde43f3750fa5917",
+    measurementId: "G-BK4T3PRRTF"
+  };
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
